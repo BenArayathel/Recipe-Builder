@@ -1,0 +1,75 @@
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">Recipe Builder</h3>
+        </div>
+        <div class="panel-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="inner-box">
+                Thought of a reciple? Add it here:
+              </div>
+            </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label for="name">Recipe Title:</label>
+              <input type="text" class="form-control" id="title" name="title">
+            </div>
+            <div class="form-group">
+              <label for="email">Ingredients (Add a comma between each ingredient):</label>
+              <input type="email" class="form-control" id="ingredients" name="ingredients">
+            </div>
+            <div class="form-group">
+              <label for="message">Instructions (Add a new step on a new line):</label>
+              <textarea class="form-control" id="instructions" name="instructions"></textarea>
+            </div>
+            <button type="button" class="btn btn-primary" (click)="createRecipe()">Create</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">List of Recipes</h3>
+        </div>
+        <div class="panel-body" *ngFor="let recipe of recipeList; let i = index">
+          <div class="row">
+              <div class="col-xs-12 col-sm-3">
+                <div class="inner-box">
+                  {{recipe.title}}
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <div class="inner-box">
+                  {{recipe.ingredients}} ... 
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <div class="inner-box">
+                  {{recipe.instructions}} ...
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-3">
+                <div class="inner-box">
+                  <button type="button" (click)="deleteRecipe(i)" class="btn btn-primary">Delete</button>
+                  <button type="button" (click)="editRecipe(i)" class="btn btn-primary">Edit</button>
+                </div>
+              </div>
+              
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
