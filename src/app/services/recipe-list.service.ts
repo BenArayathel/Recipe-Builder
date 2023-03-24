@@ -38,8 +38,10 @@ export class RecipeListService {
       this.saveRecipes();
     }
 
-    private saveRecipes(){
+    saveRecipes(){
       localStorage.setItem('recipeList', JSON.stringify(this.recipeList));
     }
+
+    
 
 }

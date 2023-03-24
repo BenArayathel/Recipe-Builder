@@ -1,7 +1,8 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+    <!-- <div class="col-xs-12 col-sm-6 col-sm-offset-3"></div> -->
+    <div class="col-xs-12 col-sm-6 ">
       <div class="panel panel-default">
         <div class="panel-heading text-center">
           <h3 class="panel-title">Recipe Builder</h3>
@@ -32,44 +33,74 @@
         </div>
       </div>
     </div>
-  </div>
-</div>
-
-<div class="container">
-  <div class="row">
-    <div class="col-xs-12 col-sm-6 col-sm-offset-3">
+    <div class="col-xs-12 col-sm-6">
       <div class="panel panel-default">
         <div class="panel-heading text-center">
-          <h3 class="panel-title">List of Recipes</h3>
+          <h3 class="panel-title">Recipe Searcher</h3>
         </div>
-        <div class="panel-body" *ngFor="let recipe of recipeList; let i = index">
+        <div class="panel-body">
           <div class="row">
-              <div class="col-xs-12 col-sm-3">
-                <div class="inner-box">
-                  {{recipe.title}}
-                </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="inner-box">
+                Can't find your recipe, search for it!
               </div>
-              <div class="col-xs-12 col-sm-3">
-                <div class="inner-box">
-                  {{recipe.ingredients}} ... 
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-3">
-                <div class="inner-box">
-                  {{recipe.instructions}} ...
-                </div>
-              </div>
-              <div class="col-xs-12 col-sm-3">
-                <div class="inner-box">
-                  <button type="button" (click)="deleteRecipe(i)" class="btn btn-primary">Delete</button>
-                  <button type="button" (click)="editRecipe(i)" class="btn btn-primary">Edit</button>
-                </div>
-              </div>
-              
             </div>
+          </div>
+          <div>
+            <div class="form-group">
+              <label for="name">Search Recipe:</label>
+              <input type="text" class="form-control" [(ngModel)]="SearchTerm" placeholder="Search...">
+            </div>
+          </div>
         </div>
       </div>
     </div>
   </div>
 </div>
 
+<div class="container">
+  <div class="row">
+    <div class="col-xs-12 col-sm-12">
+      <div class="panel panel-default">
+        <div class="panel-heading text-center">
+          <h3 class="panel-title">RECIPES</h3>
+        </div>
+        <div class="panel-body" *ngFor="let recipe of filteredRecipeList; let i = index">
+          <div class="row">
+            <div class="col-xs-12 col-sm-3">
+              <div class="inner-box" (click)="editTitle(i)">
+                <span *ngIf="!isEditingTitle[i]">{{recipe.title}}</span>
+                <div *ngIf="isEditingTitle[i]">
+                  <input type="text" class="form-control" [(ngModel)]="recipe.title">
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              <div class="inner-box" (click)="editIngredients(i)">
+                <span *ngIf="!isEditingIngredients[i]">{{recipe.ingredients}}</span>
+                <div *ngIf="isEditingIngredients[i]">
+                  <input type="text" class="form-control" [(ngModel)]="recipe.ingredients">
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              <div class="inner-box" (click)="editInstructions(i)">
+                <div *ngFor="let instructionLine of recipe.instructions; let j = index">
+                  <span *ngIf="!isEditingInstructions[i]">{{j + 1 + ". " + instructionLine}}</span>
+                  <div *ngIf="isEditingInstructions[i]">
+                    <input type="text" class="form-control" [(ngModel)]="recipe.instructions[j]">
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-3">
+              <div class="inner-box">
+                <button type="button" (click)="deleteRecipe(i)" class="btn btn-primary">Delete</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

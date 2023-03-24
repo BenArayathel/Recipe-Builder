@@ -10,13 +10,63 @@ import { RecipeListService } from '../services/recipe-list.service';
 export class RecipeListComponent {
 
   recipeList: Array<Recipe>;
+  
+  isEditingTitle: boolean[] = [];
+  isEditingIngredients: boolean[] = [];
+  isEditingInstructions: boolean[][] = [];
+
+  searchTerm: string = '';
+  filteredRecipeList: Array<Recipe>;
 
   constructor(private recipeService: RecipeListService){
     this.recipeList = this.recipeService.getRecipes();
+    this.filteredRecipeList = this.recipeList;
   }
 
 
-  createRecipe(){
+get SearchTerm(): string{
+  return this.searchTerm;
+}
+
+set SearchTerm(userInput: string){
+  this.searchTerm = userInput;
+  this.filteredRecipeList = this.searchFilter(userInput);
+  console.log(this.filteredRecipeList);
+}
+
+searchFilter(filterValue: string): Recipe[]{
+
+  return this.recipeList.filter(
+    (recipe: Recipe) => {return recipe.title.toLowerCase().includes(this.searchTerm.toLowerCase()); }
+  )
+}
+  
+
+editTitle(index: number) {
+  this.isEditingTitle[index] = !this.isEditingTitle[index];
+  this.recipeService.saveRecipes();
+  console.log(this.SearchTerm)
+  console.log(this.filteredRecipeList)
+}
+
+editIngredients(index: number) {
+  this.isEditingIngredients[index] = !this.isEditingIngredients[index];
+  this.recipeService.saveRecipes();
+}
+
+editInstructions(index: number) {
+  if (!this.isEditingInstructions[index]) {
+    this.isEditingInstructions[index] = [];
+    const numLines = this.recipeList[index].instructions.length;
+    for (let i = 0; i < numLines; i++) {
+      this.isEditingInstructions[index][i] = false;
+    }
+  }
+  this.isEditingInstructions[index][0] = !this.isEditingInstructions[index][0];
+  this.recipeService.saveRecipes();
+}
+
+createRecipe(){
 
     let title: string | null = (<HTMLInputElement>document.getElementById('title')).value;
     let ingredients = (<HTMLInputElement>document.getElementById('ingredients')).value.split('\n');
@@ -28,17 +78,10 @@ export class RecipeListComponent {
 
     this.recipeService.addToRecipes(recipe);
 
-  }
+}
 
-  deleteRecipe(index: number){
+deleteRecipe(index: number){
     this.recipeService.deleteRecipes(index);
-  }
+}
 
-  editRecipe(index: number) {
-    const editedRecipe = prompt('Edit recipe:', JSON.stringify(this.recipeList[index]));
-    if (editedRecipe) {
-      this.recipeList[index] = JSON.parse(editedRecipe);
-      // this.saveRecipes();
-    }
-  }
 }
